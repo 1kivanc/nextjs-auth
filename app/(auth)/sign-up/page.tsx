@@ -9,18 +9,15 @@ import { z } from "zod"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
+import { formSchema } from '@/lib/auth-schema'
  
-const formSchema = z.object({
-  email: z.string().min(2).max(50),
-  password: z.string().min(2).max(50),
-})
-
 
 export default function SignUp() {
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      name:"",
       email: "",
       password: ""
     },
@@ -38,6 +35,20 @@ export default function SignUp() {
   <CardContent>
   <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+      <FormField
+          control={form.control}
+          name="name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Name</FormLabel>
+              <FormControl>
+                <Input placeholder="Name" {...field} />
+              </FormControl>
+              
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <FormField
           control={form.control}
           name="email"
@@ -66,7 +77,7 @@ export default function SignUp() {
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <Button className='w-full' type="submit">Submit</Button>
       </form>
     </Form>
   </CardContent>
